@@ -1,10 +1,124 @@
+/**
+ * Character model representing a story character
+ */
 export interface Character {
   id: string;
   name: string;
   description: string;
-  imageUrl: string;
-  traits: Record<string, string | number>;
-  emotions: Record<string, string>; // emotion name -> image URL
+  imageUrl?: string;
+  traits: string[];
+  attributes: {
+    age?: string;
+    gender?: string;
+    hairColor?: string;
+    eyeColor?: string;
+    skinTone?: string;
+    height?: string;
+    build?: string;
+    [key: string]: string | undefined;
+  };
+  backstory?: string;
+  relationships?: Record<string, CharacterRelationship>;
+  createdAt: number;
+  updatedAt: number;
+  creatorId: string;
+  tokenId?: string; // NFT token ID if minted
+}
+
+/**
+ * Relationship between characters
+ */
+export interface CharacterRelationship {
+  type: string; // friend, enemy, family, etc.
+  description: string;
+  strength: number; // 0-10 scale
+}
+
+/**
+ * Scene model representing a story scene
+ */
+export interface Scene {
+  id: string;
+  title: string;
+  content: string;
+  setting: string;
+  time: string;
+  mood: string;
+  characters: string[]; // Character IDs
+  imageUrl?: string;
+  parentId?: string; // For branching narratives
+  childrenIds: string[]; // For branching narratives
+  createdAt: number;
+  updatedAt: number;
+  creatorId: string;
+  tokenId?: string; // NFT token ID if minted
+  metadata: SceneMetadata;
+}
+
+/**
+ * Metadata for a scene
+ */
+export interface SceneMetadata {
+  tags: string[];
+  complexity: number; // 0-10 scale
+  emotionalTone: string;
+  visualElements: string[];
+  audioElements?: string[];
+  interactiveElements?: InteractiveElement[];
+}
+
+/**
+ * Interactive element in a scene
+ */
+export interface InteractiveElement {
+  id: string;
+  type: 'choice' | 'item' | 'puzzle' | 'character';
+  description: string;
+  targetSceneId?: string;
+  requirements?: {
+    items?: string[];
+    characterTraits?: string[];
+    previousScenes?: string[];
+  };
+}
+
+/**
+ * Story model representing a complete story
+ */
+export interface Story {
+  id: string;
+  title: string;
+  description: string;
+  coverImageUrl?: string;
+  genre: string[];
+  characters: Record<string, Character>;
+  scenes: Record<string, Scene>;
+  rootSceneId: string;
+  createdAt: number;
+  updatedAt: number;
+  creatorId: string;
+  collaboratorIds: string[];
+  published: boolean;
+  publishedAt?: number;
+  tokenId?: string; // NFT token ID if minted
+  metadata: StoryMetadata;
+}
+
+/**
+ * Metadata for a story
+ */
+export interface StoryMetadata {
+  tags: string[];
+  ageRating: 'everyone' | 'teen' | 'mature';
+  language: string;
+  wordCount: number;
+  readTime: number; // in minutes
+  complexity: number; // 0-10 scale
+  branchCount: number;
+  endingCount: number;
+  averageRating?: number;
+  ratingCount?: number;
+  viewCount?: number;
 }
 
 export interface Choice {
@@ -16,40 +130,6 @@ export interface Choice {
     characterChanges?: Record<string, Partial<Character>>;
     variableChanges?: Record<string, any>;
   };
-}
-
-export interface Scene {
-  id: string;
-  title: string;
-  content: string;
-  imageUrl?: string;
-  backgroundImageUrl?: string;
-  characters: string[]; // Character IDs present in this scene
-  choices: Choice[];
-  variables?: Record<string, any>;
-}
-
-export interface Story {
-  id: string;
-  title: string;
-  description: string;
-  coverImageUrl: string;
-  author: {
-    id: string;
-    name: string;
-    avatarUrl?: string;
-  };
-  genre: string;
-  tags: string[];
-  tokenValue: number;
-  totalReads: number;
-  rating: number;
-  publishedAt: Date;
-  updatedAt: Date;
-  characters: Record<string, Character>;
-  scenes: Record<string, Scene>;
-  startingSceneId: string;
-  variables: Record<string, any>;
 }
 
 export interface StoryProgress {
