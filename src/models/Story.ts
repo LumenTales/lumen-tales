@@ -17,6 +17,7 @@ export interface Character {
     build?: string;
     [key: string]: string | undefined;
   };
+  emotions?: Record<string, string>; // Map of emotion names to image URLs
   backstory?: string;
   relationships?: Record<string, CharacterRelationship>;
   createdAt: number;
@@ -46,8 +47,10 @@ export interface Scene {
   mood: string;
   characters: string[]; // Character IDs
   imageUrl?: string;
+  backgroundImageUrl?: string; // Background image URL
   parentId?: string; // For branching narratives
   childrenIds: string[]; // For branching narratives
+  choices?: Choice[]; // Available choices in this scene
   createdAt: number;
   updatedAt: number;
   creatorId: string;
@@ -91,9 +94,20 @@ export interface Story {
   description: string;
   coverImageUrl?: string;
   genre: string[];
+  tags?: string[]; // Story tags for categorization
+  tokenValue?: number; // Value of the story token
+  totalReads?: number; // Number of times the story has been read
+  rating?: number; // Average rating of the story
+  author?: {
+    id: string;
+    name: string;
+    avatarUrl?: string;
+  };
   characters: Record<string, Character>;
   scenes: Record<string, Scene>;
   rootSceneId: string;
+  startingSceneId?: string; // Alias for rootSceneId for backward compatibility
+  variables?: Record<string, any>; // Story variables for tracking state
   createdAt: number;
   updatedAt: number;
   creatorId: string;

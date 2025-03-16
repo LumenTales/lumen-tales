@@ -1,20 +1,4 @@
-// Type declarations for React hooks
-type SetStateAction<S> = S | ((prevState: S) => S);
-type Dispatch<A> = (value: A) => void;
-type UseStateHook<T> = [T, Dispatch<SetStateAction<T>>];
-
-// Mock useState hook for development
-function useState<T>(initialState: T): UseStateHook<T> {
-  // This is a placeholder that will be replaced by the actual React implementation
-  // when the dependencies are properly installed
-  return [initialState, () => {}] as UseStateHook<T>;
-}
-
-// Mock useCallback hook for development
-function useCallback<T extends (...args: any[]) => any>(callback: T, deps: any[]): T {
-  return callback;
-}
-
+import { useState, useCallback } from 'react';
 import { Character, Scene } from '@/models/Story';
 import { CharacterConsistencyEngine, GeneratedCharacterImage } from '@/lib/ai/CharacterConsistencyEngine';
 import { NarrativeImageMatcher, GeneratedSceneImage } from '@/lib/ai/NarrativeImageMatcher';

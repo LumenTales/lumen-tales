@@ -64,6 +64,22 @@ export default function CharacterEditor({
   const handleSave = () => {
     if (!character) return;
     
+    // Validate required fields
+    if (!name.trim()) {
+      alert('Character name is required');
+      return;
+    }
+    
+    if (!description.trim()) {
+      alert('Character description is required');
+      return;
+    }
+    
+    if (traits.length === 0) {
+      alert('At least one character trait is required');
+      return;
+    }
+    
     const updatedCharacter: Character = {
       ...character,
       name,

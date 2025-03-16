@@ -49,45 +49,53 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
         name: 'Elena Rivers',
         avatarUrl: '/images/authors/elena.jpg',
       },
-      genre: 'Adventure',
+      genre: ['Adventure'],
       tags: ['mystery', 'ancient', 'treasure'],
       tokenValue: 250,
       totalReads: 1243,
       rating: 4.7,
-      publishedAt: new Date('2023-05-15'),
-      updatedAt: new Date('2023-06-20'),
+      publishedAt: new Date('2023-05-15').getTime(),
+      updatedAt: new Date('2023-06-20').getTime(),
       characters: {
         char1: {
           id: 'char1',
           name: 'Alex Morgan',
           description: 'A curious archaeologist with a knack for finding trouble.',
           imageUrl: '/images/characters/alex.jpg',
-          traits: {
-            intelligence: 8,
-            courage: 7,
-            charisma: 6,
+          traits: ['intelligent', 'courageous', 'charismatic'],
+          attributes: {
+            intelligence: '8',
+            courage: '7',
+            charisma: '6',
           },
           emotions: {
             happy: '/images/characters/alex_happy.jpg',
             sad: '/images/characters/alex_sad.jpg',
             surprised: '/images/characters/alex_surprised.jpg',
           },
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          creatorId: 'author1',
         },
         char2: {
           id: 'char2',
           name: 'Professor Eliza Chen',
           description: 'A brilliant historian with knowledge of ancient civilizations.',
           imageUrl: '/images/characters/eliza.jpg',
-          traits: {
-            intelligence: 9,
-            wisdom: 8,
-            patience: 6,
+          traits: ['intelligent', 'wise', 'patient'],
+          attributes: {
+            intelligence: '9',
+            wisdom: '8',
+            patience: '6',
           },
           emotions: {
             happy: '/images/characters/eliza_happy.jpg',
             concerned: '/images/characters/eliza_concerned.jpg',
             excited: '/images/characters/eliza_excited.jpg',
           },
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          creatorId: 'author1',
         },
       },
       scenes: {
@@ -98,6 +106,19 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
           imageUrl: '/images/scenes/temple_entrance.jpg',
           backgroundImageUrl: '/images/backgrounds/jungle.jpg',
           characters: ['char1', 'char2'],
+          setting: 'Ancient Temple',
+          time: 'Dusk',
+          mood: 'Mysterious',
+          childrenIds: ['scene2'],
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          creatorId: 'author1',
+          metadata: {
+            tags: ['temple', 'jungle', 'discovery'],
+            complexity: 3,
+            emotionalTone: 'suspenseful',
+            visualElements: ['temple', 'jungle', 'sunset']
+          },
           choices: [
             {
               id: 'choice1',
@@ -123,6 +144,19 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
           imageUrl: '/images/scenes/temple_interior.jpg',
           backgroundImageUrl: '/images/backgrounds/temple.jpg',
           characters: ['char1', 'char2'],
+          setting: 'Ancient Temple',
+          time: 'Dusk',
+          mood: 'Mysterious',
+          childrenIds: ['scene5'],
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          creatorId: 'author1',
+          metadata: {
+            tags: ['temple', 'jungle', 'discovery'],
+            complexity: 3,
+            emotionalTone: 'suspenseful',
+            visualElements: ['temple', 'jungle', 'sunset']
+          },
           choices: [
             {
               id: 'choice4',
@@ -151,17 +185,15 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
   const fetchStories = async () => {
     setLoading(true);
     setError(null);
+    
     try {
       // In a real app, this would be an API call
-      // const response = await fetch('/api/stories');
-      // const data = await response.json();
-      // setStories(data);
-      
-      // Using mock data for now
+      // For now, we'll just use the mock data
       setStories(mockStories);
     } catch (err) {
-      setError('Failed to fetch stories');
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch stories';
+      setError(errorMessage);
+      console.error('Error fetching stories:', err);
     } finally {
       setLoading(false);
     }
@@ -170,41 +202,21 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
   const fetchStory = async (storyId: string) => {
     setLoading(true);
     setError(null);
+    
     try {
       // In a real app, this would be an API call
-      // const response = await fetch(`/api/stories/${storyId}`);
-      // const data = await response.json();
-      // setCurrentStory(data);
-      
-      // Using mock data for now
+      // For now, we'll just use the mock data
       const story = mockStories.find(s => s.id === storyId);
-      if (story) {
-        setCurrentStory(story);
-        
-        // Check if there's saved progress
-        const savedProgress = localStorage.getItem(`story_progress_${storyId}`);
-        if (savedProgress) {
-          const parsedProgress = JSON.parse(savedProgress) as StoryProgress;
-          setProgress(parsedProgress);
-          
-          // Set current scene based on progress
-          const currentScene = story.scenes[parsedProgress.currentSceneId];
-          if (currentScene) {
-            setCurrentScene(currentScene);
-          } else {
-            // If scene not found, start from beginning
-            setCurrentScene(story.scenes[story.startingSceneId]);
-          }
-        } else {
-          // No progress, start from beginning
-          setCurrentScene(story.scenes[story.startingSceneId]);
-        }
-      } else {
-        setError('Story not found');
+      
+      if (!story) {
+        throw new Error(`Story with ID ${storyId} not found`);
       }
+      
+      setCurrentStory(story);
     } catch (err) {
-      setError('Failed to fetch story');
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch story';
+      setError(errorMessage);
+      console.error(`Error fetching story ${storyId}:`, err);
     } finally {
       setLoading(false);
     }
@@ -213,53 +225,51 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
   const startStory = async (storyId: string) => {
     setLoading(true);
     setError(null);
+    
     try {
-      // In a real app, this would include API calls to fetch the story and create progress
-      // const storyResponse = await fetch(`/api/stories/${storyId}`);
-      // const storyData = await storyResponse.json();
-      // setCurrentStory(storyData);
+      // Fetch the story first
+      await fetchStory(storyId);
       
-      // const progressResponse = await fetch('/api/progress', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ storyId }),
-      // });
-      // const progressData = await progressResponse.json();
-      // setProgress(progressData);
-      // setCurrentScene(storyData.scenes[storyData.startingSceneId]);
-      
-      // Using mock data for now
-      const story = mockStories.find(s => s.id === storyId);
-      if (story) {
-        setCurrentStory(story);
-        
-        // Create new progress
-        const newProgress: StoryProgress = {
-          userId: 'user1', // Current user
-          storyId,
-          currentSceneId: story.startingSceneId,
-          visitedScenes: [story.startingSceneId],
-          characterStates: {},
-          variables: { ...story.variables },
-          choiceHistory: [],
-          tokensSpent: 0,
-          completedEndings: [],
-          lastReadAt: new Date(),
-        };
-        
-        setProgress(newProgress);
-        setCurrentScene(story.scenes[story.startingSceneId]);
-        
-        // Save progress to localStorage
-        localStorage.setItem(`story_progress_${storyId}`, JSON.stringify(newProgress));
-      } else {
-        setError('Story not found');
+      if (!currentStory) {
+        throw new Error('Failed to load story');
       }
+      
+      // Initialize progress
+      const initialSceneId = currentStory.rootSceneId || currentStory.startingSceneId;
+      
+      if (!initialSceneId) {
+        throw new Error('Story has no starting scene');
+      }
+      
+      const initialScene = currentStory.scenes[initialSceneId];
+      
+      if (!initialScene) {
+        throw new Error(`Starting scene ${initialSceneId} not found`);
+      }
+      
+      // Create new progress object
+      const newProgress: StoryProgress = {
+        userId: 'current-user', // In a real app, this would be the actual user ID
+        storyId,
+        currentSceneId: initialSceneId,
+        visitedScenes: [initialSceneId],
+        characterStates: {},
+        variables: currentStory.variables || {},
+        choiceHistory: [],
+        tokensSpent: 0,
+        completedEndings: [],
+        lastReadAt: new Date()
+      };
+      
+      setProgress(newProgress);
+      setCurrentScene(initialScene);
+      
+      // Save progress to localStorage
+      localStorage.setItem(`story_progress_${storyId}`, JSON.stringify(newProgress));
     } catch (err) {
-      setError('Failed to start story');
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to start story';
+      setError(errorMessage);
+      console.error(`Error starting story ${storyId}:`, err);
     } finally {
       setLoading(false);
     }
@@ -270,85 +280,60 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
       setError('No active story or scene');
       return;
     }
-
+    
     setLoading(true);
     setError(null);
+    
     try {
-      // Find the selected choice
-      const choice = currentScene.choices.find(c => c.id === choiceId);
+      // Find the choice in the current scene
+      const choice = currentScene.choices?.find(c => c.id === choiceId);
+      
       if (!choice) {
-        setError('Invalid choice');
-        return;
+        throw new Error(`Choice ${choiceId} not found in current scene`);
       }
-
-      // In a real app, this would include an API call to update progress
-      // const response = await fetch('/api/progress', {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     storyId: currentStory.id,
-      //     choiceId,
-      //   }),
-      // });
-      // const data = await response.json();
-      // setProgress(data.progress);
-      // setCurrentScene(currentStory.scenes[data.progress.currentSceneId]);
       
-      // Mock implementation
-      // Update progress
+      // Get the next scene
       const nextScene = currentStory.scenes[choice.nextSceneId];
-      if (!nextScene) {
-        setError('Next scene not found');
-        return;
-      }
-
-      // Apply choice consequences if any
-      let updatedVariables = { ...progress.variables };
-      let updatedCharacterStates = { ...progress.characterStates };
       
-      if (choice.consequences) {
-        // Update variables
-        if (choice.consequences.variableChanges) {
-          updatedVariables = {
-            ...updatedVariables,
-            ...choice.consequences.variableChanges,
-          };
-        }
-        
-        // Update character states
-        if (choice.consequences.characterChanges) {
-          Object.entries(choice.consequences.characterChanges).forEach(([charId, changes]) => {
-            updatedCharacterStates[charId] = {
-              ...(updatedCharacterStates[charId] || {}),
-              ...changes,
-            };
-          });
-        }
+      if (!nextScene) {
+        throw new Error(`Next scene ${choice.nextSceneId} not found`);
       }
-
-      // Create updated progress
+      
+      // Update progress
       const updatedProgress: StoryProgress = {
         ...progress,
         currentSceneId: nextScene.id,
         visitedScenes: [...progress.visitedScenes, nextScene.id],
-        variables: updatedVariables,
-        characterStates: updatedCharacterStates,
         choiceHistory: [
           ...progress.choiceHistory,
           {
             sceneId: currentScene.id,
             choiceId,
-            timestamp: new Date(),
-          },
+            timestamp: new Date()
+          }
         ],
-        lastReadAt: new Date(),
+        lastReadAt: new Date()
       };
       
-      // If choice required tokens, update tokens spent
-      if (choice.requiredTokens) {
-        updatedProgress.tokensSpent += choice.requiredTokens;
+      // Apply any consequences from the choice
+      if (choice.consequences) {
+        // Update character states
+        if (choice.consequences.characterChanges) {
+          Object.entries(choice.consequences.characterChanges).forEach(([charId, changes]) => {
+            updatedProgress.characterStates[charId] = {
+              ...(updatedProgress.characterStates[charId] || {}),
+              ...changes
+            };
+          });
+        }
+        
+        // Update variables
+        if (choice.consequences.variableChanges) {
+          updatedProgress.variables = {
+            ...updatedProgress.variables,
+            ...choice.consequences.variableChanges
+          };
+        }
       }
       
       setProgress(updatedProgress);
@@ -357,8 +342,9 @@ export const StoryProvider: React.FC<StoryProviderProps> = ({ children }) => {
       // Save progress to localStorage
       localStorage.setItem(`story_progress_${currentStory.id}`, JSON.stringify(updatedProgress));
     } catch (err) {
-      setError('Failed to process choice');
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to process choice';
+      setError(errorMessage);
+      console.error(`Error processing choice ${choiceId}:`, err);
     } finally {
       setLoading(false);
     }
