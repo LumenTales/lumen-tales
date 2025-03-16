@@ -1,147 +1,97 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
+import Link from 'next/link';
+import { FiClock, FiUser } from 'react-icons/fi';
+import { formatDate } from '../../utils/format';
 
 interface Author {
-  id: string;
   name: string;
-  image: string;
+  image?: string;
 }
 
 interface StoryCardProps {
-  story: {
-    id: string;
-    title: string;
-    description: string;
-    coverImage: string;
-    author: Author;
-    genre: string[];
-    readTime: string;
-    rating: number;
-    readers: number;
-  };
-  variant?: 'default' | 'compact';
+  id: string;
+  title: string;
+  description: string;
+  coverImage: string;
+  author: Author;
+  genre: string;
+  publishedDate: Date;
+  readTime: number;
+  readersCount: number;
+  isTokenized?: boolean;
 }
 
-const StoryCard: React.FC<StoryCardProps> = ({ story, variant = 'default' }) => {
-  const {
-    id,
-    title,
-    description,
-    coverImage,
-    author,
-    genre,
-    readTime,
-    rating,
-    readers,
-  } = story;
-
-  if (variant === 'compact') {
-    return (
-      <Link href={`/story/${id}`} className="block group">
-        <div className="card card-hover h-full flex flex-row">
-          <div className="relative w-24 h-24 flex-shrink-0">
-            <Image
-              src={coverImage}
-              alt={title}
-              fill
-              style={{ objectFit: 'cover' }}
-              className="rounded-l-lg"
-            />
-          </div>
-          <div className="p-3 flex-grow">
-            <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-1">
-              {title}
-            </h3>
-            <div className="flex items-center mt-1 text-xs text-gray-500">
-              <span className="flex items-center">
-                <FiStar className="mr-1 text-yellow-500" />
-                {rating}
-              </span>
-              <span className="mx-2">•</span>
-              <span className="flex items-center">
-                <FiClock className="mr-1" />
-                {readTime}
-              </span>
-            </div>
-            <div className="mt-2 flex items-center">
-              <div className="relative w-5 h-5 rounded-full overflow-hidden">
-                <Image
-                  src={author.image}
-                  alt={author.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <span className="ml-2 text-xs text-gray-600">{author.name}</span>
-            </div>
-          </div>
-        </div>
-      </Link>
-    );
-  }
-
+const StoryCard: React.FC<StoryCardProps> = ({
+  id,
+  title,
+  description,
+  coverImage,
+  author,
+  genre,
+  publishedDate,
+  readTime,
+  readersCount,
+  isTokenized = false,
+}) => {
   return (
-    <Link href={`/story/${id}`} className="block group">
-      <div className="card card-hover h-full">
-        <div className="relative h-48 w-full">
-          <Image
-            src={coverImage}
-            alt={title}
-            fill
-            style={{ objectFit: 'cover' }}
-            className="rounded-t-lg"
-          />
-          <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-            {genre.map((g) => (
-              <span
-                key={g}
-                className="text-xs px-2 py-1 bg-black/60 text-white rounded-full backdrop-blur-sm"
-              >
-                {g}
-              </span>
-            ))}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:shadow-lg hover:-translate-y-1">
+      <div className="relative h-48">
+        <Image
+          src={coverImage}
+          alt={title}
+          fill
+          style={{ objectFit: 'cover' }}
+        />
+        {isTokenized && (
+          <div className="absolute top-2 right-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
+            NFT
           </div>
-        </div>
-        <div className="p-4">
-          <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary-600 transition-colors">
-            {title}
-          </h3>
-          <p className="mt-2 text-sm text-gray-600 line-clamp-2">{description}</p>
-          
-          <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                <Image
-                  src={author.image}
-                  alt={author.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <span className="ml-2 text-sm text-gray-700">{author.name}</span>
-            </div>
-            
-            <div className="flex items-center space-x-3 text-xs text-gray-500">
-              <span className="flex items-center">
-                <FiStar className="mr-1 text-yellow-500" />
-                {rating}
-              </span>
-              <span className="flex items-center">
-                <FiClock className="mr-1" />
-                {readTime}
-              </span>
-              <span className="flex items-center">
-                <FiUsers className="mr-1" />
-                {readers}
-              </span>
-            </div>
-          </div>
+        )}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+          <span className="inline-block bg-primary-600 text-white text-xs px-2 py-1 rounded-full mb-2">
+            {genre}
+          </span>
+          <h3 className="text-white font-bold text-lg line-clamp-1">{title}</h3>
         </div>
       </div>
-    </Link>
+      
+      <div className="p-4">
+        <div className="flex items-center mb-3">
+          {author.image && (
+            <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2">
+              <Image
+                src={author.image}
+                alt={author.name}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+          )}
+          <span className="text-sm text-gray-700">{author.name}</span>
+          <span className="mx-2 text-gray-400">•</span>
+          <span className="text-sm text-gray-500">{formatDate(publishedDate)}</span>
+        </div>
+        
+        <p className="text-gray-600 text-sm line-clamp-2 mb-4">{description}</p>
+        
+        <div className="flex justify-between text-xs text-gray-500">
+          <div className="flex items-center">
+            <FiClock className="mr-1" />
+            <span>{readTime} min read</span>
+          </div>
+          <div className="flex items-center">
+            <FiUser className="mr-1" />
+            <span>{readersCount} readers</span>
+          </div>
+        </div>
+        
+        <Link href={`/story/${id}`} className="mt-4 block text-center bg-primary-600 text-white py-2 rounded-md hover:bg-primary-700 transition-colors">
+          Read Story
+        </Link>
+      </div>
+    </div>
   );
 };
 
-export default StoryCard; 
+export default StoryCard;

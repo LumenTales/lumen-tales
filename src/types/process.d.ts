@@ -10,6 +10,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_INFURA_ID: string;
     NEXT_PUBLIC_CHAIN_ID: string;
     NEXT_PUBLIC_CONTRACT_ADDRESS: string;
+    NEXT_PUBLIC_STORY_CONTRACT_ADDRESS: string;
+    NEXT_PUBLIC_CHARACTER_CONTRACT_ADDRESS: string;
     GEMINI_API_KEY: string;
   }
   

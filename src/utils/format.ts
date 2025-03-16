@@ -1,10 +1,9 @@
 /**
  * Formats a date string to a readable format
- * @param dateString ISO date string
+ * @param date Date object
  * @returns Formatted date string
  */
-export const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
+export const formatDate = (date: Date): string => {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'long',
