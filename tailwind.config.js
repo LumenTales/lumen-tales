@@ -1,41 +1,61 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       colors: {
         primary: {
-          light: '#7BA9FF',
-          DEFAULT: '#4C87E6',
-          dark: '#2A3B8F',
+          50: '#E6F0FF',
+          100: '#CCE0FF',
+          200: '#99C2FF',
+          300: '#66A3FF',
+          400: '#3385FF',
+          500: '#0066FF',
+          600: '#0052CC',
+          700: '#003D99',
+          800: '#002966',
+          900: '#001433',
         },
         secondary: {
-          light: '#E0E5FF',
-          DEFAULT: '#5F9AE6',
-          dark: '#2C75D8',
+          50: '#F0F5FF',
+          100: '#E0EBFF',
+          200: '#C2D6FF',
+          300: '#A3C2FF',
+          400: '#85ADFF',
+          500: '#6699FF',
+          600: '#527ACC',
+          700: '#3D5C99',
+          800: '#293D66',
+          900: '#141F33',
         },
         accent: {
-          DEFAULT: '#FFD700',
+          50: '#FFF5E6',
+          100: '#FFEACC',
+          200: '#FFD699',
+          300: '#FFC266',
+          400: '#FFAD33',
+          500: '#FF9900',
+          600: '#CC7A00',
+          700: '#995C00',
+          800: '#663D00',
+          900: '#331F00',
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'sans-serif'],
-        serif: ['var(--font-merriweather)', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+        mono: ['Fira Code', 'monospace'],
+      },
+      boxShadow: {
+        glow: '0 0 15px rgba(102, 153, 255, 0.5)',
       },
       animation: {
-        'glow-pulse': 'glow-pulse 3s infinite',
-      },
-      keyframes: {
-        'glow-pulse': {
-          '0%, 100%': { opacity: 0.7 },
-          '50%': { opacity: 0.9 },
-        },
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
   plugins: [],
-} 
+}; 

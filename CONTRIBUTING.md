@@ -1,57 +1,62 @@
 # Contributing to Lumen Tales
 
-We love your input! We want to make contributing to Lumen Tales as easy and transparent as possible, whether it's:
+Thank you for your interest in contributing to Lumen Tales! This document provides guidelines and instructions for contributing to this project.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
-- Becoming a maintainer
+## Code of Conduct
 
-## Development Process
+By participating in this project, you agree to abide by our Code of Conduct. Please read it before contributing.
 
-We use GitHub to host code, to track issues and feature requests, as well as accept pull requests.
+## How to Contribute
+
+### Reporting Bugs
+
+- Check if the bug has already been reported in the Issues section
+- Use the bug report template when creating a new issue
+- Include detailed steps to reproduce the bug
+- Include screenshots if applicable
+- Describe the expected behavior and what actually happened
+
+### Suggesting Features
+
+- Check if the feature has already been suggested in the Issues section
+- Use the feature request template when creating a new issue
+- Provide a clear description of the feature
+- Explain why this feature would be useful to most users
 
 ### Pull Requests
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a new branch (`git checkout -b feature/your-feature-name`)
+3. Make your changes
+4. Run tests to ensure they pass
+5. Commit your changes (`git commit -m 'Add some feature'`)
+6. Push to the branch (`git push origin feature/your-feature-name`)
+7. Open a Pull Request
 
-### Pull Request Guidelines
+### Coding Standards
 
-- Update the README.md with details of changes to the interface, if applicable.
-- Update the documentation with details of any changes, if applicable.
-- The PR should work for all supported browsers and devices.
-- Follow the existing code style and conventions.
-- Include appropriate tests.
+- Follow the existing code style
+- Write tests for new features
+- Update documentation for changes
+- Keep pull requests focused on a single topic
 
-## Code Style
+## Development Setup
 
-- We use ESLint and Prettier to enforce code style.
-- Run `npm run lint` to check your code style.
-- Run `npm run format` to automatically format your code.
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Copy `.env.example` to `.env.local` and fill in the required values
+4. Run the development server with `npm run dev`
 
-## Issue Reporting
+## Testing
 
-We use GitHub issues to track public bugs. Report a bug by opening a new issue.
+- Run tests with `npm test`
+- Ensure all tests pass before submitting a pull request
 
-### Bug Reports
+## Documentation
 
-When filing an issue, make sure to answer these questions:
-
-1. What version of the project are you using?
-2. What operating system and browser are you using?
-3. What did you do?
-4. What did you expect to see?
-5. What did you see instead?
-
-## Feature Requests
-
-We welcome feature requests. Please provide as much detail and context as possible.
+- Update the README.md if your changes require it
+- Document new features or changes to existing functionality
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the project's MIT License. 
+By contributing to Lumen Tales, you agree that your contributions will be licensed under the project's MIT License. 
