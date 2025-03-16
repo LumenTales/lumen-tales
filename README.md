@@ -1,17 +1,32 @@
-# 导航到项目目录
-cd /Users/fuxuesong/Desktop/LUMENTALES
+# Lumen Tales
 
-# 初始化Git仓库
+Lumen Tales is an AI-powered interactive storytelling platform with tokenized narratives and consistent character imagery.
+
+## Getting Started
+
+```bash
+# Navigate to the project directory
+cd your-project-directory
+
+# Initialize Git repository
 git init
 
-# 添加所有文件
+# Add all files
 git add .
 
-# 提交更改
+# Commit changes
 git commit -m "Initial commit: Lumen Tales AI-powered interactive storytelling platform"
 
-# 添加远程仓库
+# Add remote repository
 git remote add origin git@github.com:LumenTales/lumen-tales.git
 
-# 推送代码
-git push -u origin main 
+# Push code
+git push -u origin main
+```
+
+## Features
+
+- Interactive storytelling with branching narratives
+- AI-generated consistent character imagery
+- Tokenized story ownership
+- Web3 integration for digital collectibles 
