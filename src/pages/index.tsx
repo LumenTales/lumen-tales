@@ -1,38 +1,30 @@
-import { NextPage } from 'next';
+import React from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-
-import Layout from '@components/layout/Layout';
 import Hero from '@components/home/Hero';
 import FeaturedStories from '@components/home/FeaturedStories';
 import HowItWorks from '@components/home/HowItWorks';
-import CreatorShowcase from '@components/home/CreatorShowcase';
 import TokenEconomy from '@components/home/TokenEconomy';
+import CreatorShowcase from '@components/home/CreatorShowcase';
 import CallToAction from '@components/home/CallToAction';
 
-const Home: NextPage = () => {
+const HomePage: React.FC = () => {
   return (
-    <Layout>
+    <>
       <Head>
-        <title>Lumen Tales | Interactive Narrative Platform</title>
-        <meta
-          name="description"
-          content="Lumen Tales is a groundbreaking platform that fuses AI-generated consistent character imagery with branching narratives, underpinned by a token economy."
-        />
+        <title>Lumen Tales | Interactive Stories Powered by AI & Blockchain</title>
+        <meta name="description" content="A tokenized interactive narrative platform where stories become digital assets." />
       </Head>
-
+      
       <main>
         <Hero />
         <FeaturedStories />
         <HowItWorks />
-        <CreatorShowcase />
         <TokenEconomy />
+        <CreatorShowcase />
         <CallToAction />
       </main>
-    </Layout>
+    </>
   );
 };
 
-export default Home; 
+export default HomePage; 

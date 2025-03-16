@@ -1,23 +1,33 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
   images: {
-    domains: ['lumentales.com'],
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
   },
-  webpack: (config) => {
-    config.resolve.fallback = { 
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
-      http: require.resolve('stream-http'),
-      https: require.resolve('https-browserify'),
-      os: require.resolve('os-browserify/browser'),
-      zlib: require.resolve('browserify-zlib'),
-    };
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
     return config;
+  },
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/login',
+        permanent: false,
+        has: [
+          {
+            type: 'cookie',
+            key: 'auth',
+            value: undefined,
+          },
+        ],
+      },
+    ];
   },
 };
 

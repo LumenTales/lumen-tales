@@ -1,40 +1,32 @@
+import React from 'react';
 import { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Web3ReactProvider } from '@web3-react/core';
-import { ethers } from 'ethers';
-
+import Head from 'next/head';
 import { AuthProvider } from '@context/AuthContext';
 import { UIProvider } from '@context/UIContext';
-import { theme } from '@styles/theme';
+import Layout from '@components/layout/Layout';
 import '@styles/globals.css';
 
-// Initialize React Query client
-const queryClient = new QueryClient();
-
-// Web3 provider getter
-function getLibrary(provider: any) {
-  return new ethers.BrowserProvider(provider);
-}
-
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AuthProvider>
-              <UIProvider>
-                <Component {...pageProps} />
-              </UIProvider>
-            </AuthProvider>
-          </ThemeProvider>
-        </Web3ReactProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Lumen Tales | Interactive Stories Powered by AI & Blockchain</title>
+        <meta name="description" content="A tokenized interactive narrative platform where stories become digital assets." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+      </Head>
+      
+      <AuthProvider>
+        <UIProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </UIProvider>
+      </AuthProvider>
+    </>
   );
 }
 
